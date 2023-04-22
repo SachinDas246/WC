@@ -1,0 +1,25 @@
+{
+  "name": "wc-builder",
+  "version": "1.0.0",
+  "description": "\"# WC\"",
+  "main": "bin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "wcb": "./bin.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SachinDas246/WC.git"
+  },
+  "keywords": [
+    "wcbuilder"
+  ],
+  "author": "SachinDas246",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SachinDas246/WC/issues"
+  },
+  "homepage": "https://github.com/SachinDas246/WC#readme"
+}
