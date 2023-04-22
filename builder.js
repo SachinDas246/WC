@@ -7,9 +7,8 @@ const process = function(src, dest){
   dest = path.resolve(dest);
   if (fs.existsSync(dest)) {
     fs.rmdirSync(dest, { recursive: true });
-  }
-    
-  console.log(wcbconfig);  
+  }   
+
   build(src,dest,wcbconfig);
 }
 
@@ -22,10 +21,12 @@ function getConfig(src){
 
   const data = fs.readFileSync(configPATH);
   let jsonData = JSON.parse(data);
+
   relHtmlPathArr =  jsonData.hasOwnProperty('requiredHTML')? jsonData['requiredHTML']:[]
   absHtmlPathArr = relHtmlPathArr.map(p => path.resolve(p));
   jsonData['requiredHTML'] = absHtmlPathArr;
   jsonData['configPATH'] = configPATH;
+  jsonData['minify'] = jsonData.hasOwnProperty('minify')?jsonData['minify']:false;
   return jsonData;
 }
 
@@ -53,8 +54,13 @@ const build = function(src, dest,config) {
         const content = fs.readFileSync(destPath, 'utf-8');
         const updatedContent = content.replace(/_htmlFrom\('(.*)'\)/g, (_, p1) => {
           const htmlPath = path.join(path.dirname(srcPath), p1);
-          const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
-          return '`' + htmlContent.replace(/`/g, '\\`') + '`';
+          const htmlContent = fs.readFileSync(htmlPath, 'utf-8');      
+          let newCode =  ('`' + htmlContent.replace(/`/g, '\\`') + '`')
+          if(config['minify'])
+          {
+            newCode = newCode.replace(/\s*\n\s*/g, '')
+          }    
+          return newCode
         });
         fs.writeFileSync(destPath, updatedContent);
       }
